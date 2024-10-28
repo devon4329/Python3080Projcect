@@ -8,12 +8,12 @@ number of guesses to guess each letter in the random word out of the Excel sheet
 """
 import requests, bs4, openpyxl, random
 
-file = "Test.xlsx"
+file = "Task1.xlsx"
 
 # select_word function to randomly select a word from an Excel file
 def select_word(file):
     wb = openpyxl.load_workbook(file)
-    sheet = wb['Sheet 1']
+    sheet = wb['Sheet']
 
     word = [cell.value for cell in sheet['A'] if cell.value is not None]
 
