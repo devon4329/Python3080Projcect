@@ -20,9 +20,11 @@ class Game():
 
     def __init__(self):
         self.word = self.select_word(FILE)
+        self.word_length = len(self.word)
         self.letters_guessed = []
         self.incorrect_guesses = 0
         self.guess_index = 1
+        self.guessed_word = False
 
     def select_word(self, file):
         wb = openpyxl.load_workbook(file)
@@ -48,8 +50,18 @@ class Game():
 
         while not valid:
             guess = input(f"Guess {self.guess_index} (Incorrect Guesses {self.incorrect_guesses}): ").lower()
-            if len(guess) > 1:
-                print("ERROR: Please input only one letter")
+            if len(guess) == self.word_length:
+                if guess == self.word:
+                    print("You guessed the word!")
+                    self.guessed_word == True
+                    break
+                else:
+                    print(f"The word is not {guess}")
+                    self.guess_index += 1
+                    self.incorrect_guesses +=1
+                    break
+            if len(guess) > 1 or len(guess) < 1:
+                print("ERROR: Please input only one letter or length of word")
                 continue
             if guess.isdigit():
                 print("ERROR: Guess must be a letter")
@@ -60,18 +72,17 @@ class Game():
             if guess not in self.word:
                 print(f"There is no {guess} in the word")
                 self.incorrect_guesses += 1
+                self.guess_index += 1
                 self.letters_guessed.append(guess)
                 valid = True
                 break
             else:
                 print(f"{guess} is in the word!")
                 self.letters_guessed.append(guess)
+                self.guess_index += 1
                 valid = True
                 break
-
         
-
-
 
 def get_words():
     """Get the words off of the internet."""
@@ -110,9 +121,16 @@ def main_game(game):
     print("Welcome to Nick and Devon's Hangman Game!")
     print(textwrap.fill(f"You will have {INCORRECT_GUESSES} guesses to reveal the hidden word selected from the top 1000 English words.", 40))
 
-    while game.incorrect_guesses != INCORRECT_GUESSES:
+    while game.incorrect_guesses < INCORRECT_GUESSES and not game.guessed_word:
         game.display_word()
         game.guess_letter()
+        # TODO: After every guess, check if every letter of the word is in the letters
+        # guessed list. Thus, the word has been guessed. This can be done with a boolean flag
+        # to stop the while loop along with 
+
+    # End game (Could be made neater)
+    if not game.guessed_word:
+        print(f"The word was {game.word}")
     
 
 def main():
