@@ -26,7 +26,7 @@ INCORRECT_GUESSES = 3
 
 class Game():
     """Represents the game that the user plays."""
-
+    
     def __init__(self):
         """Each game has data about the word and the guesses."""
         self.word = self.select_word(FILE)
