@@ -62,6 +62,17 @@ def create_sheet(aList):
     sheet.title = "CVF Top 3 Contributors"
     print(top_con.sheetnames)
 
+    # Add years and total to sheet
+    start_year = 2022
+    for i in range(4):
+        if i < 3:
+            cell2022 = sheet.cell(row=i+2,column=1, value = start_year + i )
+            cell2022.alignment = Alignment(horizontal="center", vertical="center")
+        else:
+            cell2022 = sheet.cell(row=i+2, column=1, value = "Total")
+            cell2022.alignment = Alignment(horizontal="center")
+
+
     # Add names to sheet
     for i in range(3):
         cell = sheet.cell(row= 1, column = i+2, value = aList[i][0])
