@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d74e7eff-6081-451f-8cb5-70d637123bef" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 1/~$sk 1 Report.docx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,11 +38,17 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.Task1.executor": "Run",
+    "Python.Task2.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/devonwhite/Library/Mobile Documents/com~apple~CloudDocs/School/2024/Fall 2024/CS3080 - Python/Projects/PythonProjcect"
+    "last_opened_file_path": "/Users/devonwhite/Library/Mobile Documents/com~apple~CloudDocs/School/2024/Fall 2024/CS3080 - Python/Projects/PythonProjcect/Task 2"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Task 2" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Task1" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="PythonProjcect" />
