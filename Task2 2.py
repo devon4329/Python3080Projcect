@@ -7,8 +7,11 @@ and obtain the top three contributors (authors or researchers) in a conference f
 author contributed to a paper separated by the year.
 """
 import openpyxl
+from numpy.core.defchararray import center
+from openpyxl.styles import Alignment
 import bs4
 import requests
+
 
 
 test_dict1 = dict({'bill': 2, "jill": 3, "frank": 1})
@@ -51,3 +54,22 @@ def sort_and_reverse(mylist):
     return mylist
 
 print(sort_and_reverse(final_count))
+
+def create_sheet(aList):
+    top_con = openpyxl.Workbook()
+    print(top_con.sheetnames)
+    sheet = top_con.active
+    sheet.title = "CVF Top 3 Contributors"
+    print(top_con.sheetnames)
+
+    # Add names to sheet
+    for i in range(3):
+        cell = sheet.cell(row= 1, column = i+2, value = aList[i][0])
+        cell.alignment = Alignment(horizontal="center", vertical="center")
+    for i in range(3):
+        cell2 = sheet.cell(row=2, column=i+2, value= aList[i][1])
+        cell2.alignment = Alignment(horizontal="center", vertical="center")
+
+    top_con.save('Task2.xlsx')
+
+create_sheet(final_count)
