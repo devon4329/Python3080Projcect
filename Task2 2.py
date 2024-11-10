@@ -8,7 +8,7 @@ author contributed to a paper separated by the year.
 """
 import openpyxl
 from numpy.core.defchararray import center
-from openpyxl.styles import Alignment
+from openpyxl.styles import Alignment, Font
 import bs4
 import requests
 
@@ -67,19 +67,22 @@ def create_sheet(aList):
     for i in range(4):
         if i < 3:
             cell2022 = sheet.cell(row=i+2,column=1, value = start_year + i )
+            cell2022.font = Font(bold=True)
             cell2022.alignment = Alignment(horizontal="center", vertical="center")
         else:
             cell2022 = sheet.cell(row=i+2, column=1, value = "Total")
+            cell2022.font = Font(bold=True)
             cell2022.alignment = Alignment(horizontal="center")
 
 
     # Add names to sheet
     for i in range(3):
-        cell = sheet.cell(row= 1, column = i+2, value = aList[i][0])
+        cell = sheet.cell(row= i+1, column = i+2, value = aList[i][0])
         cell.alignment = Alignment(horizontal="center", vertical="center")
-    for i in range(3):
-        cell2 = sheet.cell(row=2, column=i+2, value= aList[i][1])
-        cell2.alignment = Alignment(horizontal="center", vertical="center")
+        #Add year 2022 values to sheet
+        for j in range(3):
+            cell2 = sheet.cell(row=j+2, column=j+2, value= aList[j][1])
+            cell2.alignment = Alignment(horizontal="center", vertical="center")
 
     top_con.save('Task2.xlsx')
 
