@@ -52,25 +52,25 @@ def find_contributors(link):
 
 def count_totals(dict1, dict2, dict3):
     """Return the total for each contributor over the three years."""
-    the_total = {}
+    year_totals = {}
 
     def add_totals(key, values):
 
-        if key in the_total:
-            the_total[key][0].append(values)
-            the_total[key][1] += values
+        if key in year_totals:
+            year_totals[key][0].append(values)
+            year_totals[key][1] += values
         else:
-            the_total[key] = [[values], values]
+            year_totals[key] = [[values], values]
 
     for dict_in in [dict1, dict2, dict3]:
         for key, value in dict_in.items():
             add_totals(key, value)
 
-    sorted_list = sorted_list = sorted([(key, values[0], values[1])
-                                        for key, values in the_total.items()],
+    sorted_totals = sorted_totals = sorted([(key, values[0], values[1])
+                                        for key, values in year_totals.items()],
                                         key=lambda x: x[2], reverse=True)
 
-    return sorted_list
+    return sorted_totals
 
 
 def create_sheet(a_list):
@@ -83,13 +83,13 @@ def create_sheet(a_list):
     start_year = 2022
     for i in range(4):
         if i < 3:
-            cell2022 = sheet.cell(row=i+2, column=1, value=start_year + i)
-            cell2022.font = Font(bold=True)
-            cell2022.alignment = Alignment(horizontal="center", vertical="center")
+            cell = sheet.cell(row=i+2, column=1, value=start_year + i)
+            cell.font = Font(bold=True)
+            cell.alignment = Alignment(horizontal="center", vertical="center")
         else:
-            cell2022 = sheet.cell(row=i+2, column=1, value="Total")
-            cell2022.font = Font(bold=True)
-            cell2022.alignment = Alignment(horizontal="center")
+            cell = sheet.cell(row=i+2, column=1, value="Total")
+            cell.font = Font(bold=True)
+            cell.alignment = Alignment(horizontal="center")
 
     # Add names
     for i in range(3):
@@ -101,12 +101,12 @@ def create_sheet(a_list):
     for key in a_list[:3]:
         i = 0
         for value in (key[1]):
-            cell2 = sheet.cell(row=i+2, column=index, value=value)
-            cell2.alignment = Alignment(horizontal="center", vertical="center")
+            cell = sheet.cell(row=i+2, column=index, value=value)
+            cell.alignment = Alignment(horizontal="center", vertical="center")
             i += 1
 
-        cell2 = sheet.cell(row=5, column=index, value=key[2])
-        cell2.alignment = Alignment(horizontal="center", vertical="center")
+        cell = sheet.cell(row=5, column=index, value=key[2])
+        cell.alignment = Alignment(horizontal="center", vertical="center")
         index += 1
 
     top_con.save('Task2.xlsx')
