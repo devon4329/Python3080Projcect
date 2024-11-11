@@ -6,17 +6,45 @@ and obtain the top three contributors (authors or researchers) in a conference f
 (2022, 2023, and 2024). The results will be saved into an Excel spreadsheet that shows how many times each
 author contributed to a paper separated by the year.
 """
+from venv import create
+
 import openpyxl
 from numpy.core.defchararray import center
 from openpyxl.styles import Alignment, Font
 import bs4
 import requests
 
+LINK_2022 = r'https://openaccess.thecvf.com/CVPR2022?day=all'
+LINK_2023 = r'https://openaccess.thecvf.com/CVPR2023?day=all'
+LINK_2024 = r'https://openaccess.thecvf.com/CVPR2024?day=all'
 
 
-dict2022 = dict({'bill': 2, "jill": 3, "frank": 1})
-dict2023 = dict({'bill': 8, "jill": 7, "frank": 9, "hank": 10})
-dict2024 = dict({'bill': 8, "jill": 7, "frank": 9, "mary": 10})
+def find_contributors(link):
+    try:
+        response = requests.get(link)
+        response.raise_for_status()
+
+    except Exception as e:
+        print(f"Error {e}\nCheck Internet Connection")
+        quit()
+
+    soup = bs4.BeautifulSoup(response.text, 'html.parser')
+
+    div = soup.find('div', {'id' : 'content'})
+
+    authors = list(div.select('input[type=hidden]'))
+
+    author_counts = {}
+
+    for element in authors:
+        value = element.get("value")
+
+        if value in author_counts:
+            author_counts[value] += 1
+        else:
+            author_counts[value] = 1
+
+    return author_counts
 
 # Counts Totals of all lists
 def count_totals(dict1, dict2, dict3):
@@ -41,34 +69,7 @@ def count_totals(dict1, dict2, dict3):
 
 
 
-final_count = count_totals(dict2022, dict2023, dict2024)
-
-
-# Sorts and reverses A list's values from highest to lowest
-def sort_and_reverse(mylist):
-    first = len(mylist)
-    for i in range(0, first):
-        for j in range(0, first - i - 1):
-            if mylist[j][2] < mylist[j+1][2]:
-                temp = mylist[j]
-                mylist[j] = mylist[j+1]
-                mylist[j+1] = temp
-    return mylist
-
-
-#final_count = sort_and_reverse(final_count)
-print(final_count)
-'''
-list_1 = sort_and_reverse((list(test_dict1.items())))
-list_2 = sort_and_reverse(list(test_dict2.items()))
-list_3 = sort_and_reverse(list(test_dict3.items()))
-
-print(list_1)
-print(list_2)
-print(list_3)
-print(final_count)
-
-def create_sheet(aList, list2022, list2023, list2024):
+def create_sheet(aList):
     top_con = openpyxl.Workbook()
     print(top_con.sheetnames)
     sheet = top_con.active
@@ -94,11 +95,32 @@ def create_sheet(aList, list2022, list2023, list2024):
         cell.alignment = Alignment(horizontal="center", vertical="center")
 
     #Add year 2022 values to sheet
-    for i in range(3):
-        cell2 = sheet.cell(row=2, column=i+2, value= list2022[i][1])
+    index = 2
+    for key in aList[:3]:
+        i = 0
+        for value in (key[1]):
+            cell2 = sheet.cell(row=i+2, column=index, value=value)
+            cell2.alignment = Alignment(horizontal="center", vertical="center")
+            i += 1
+
+        cell2 = sheet.cell(row=5, column = index, value=key[2])
         cell2.alignment = Alignment(horizontal="center", vertical="center")
+        index += 1
 
     top_con.save('Task2.xlsx')
 
-create_sheet(final_count, list_1, test_dict2, test_dict3)
-'''
+
+def main():
+    contributors_2022 = find_contributors(LINK_2022)
+    contributors_2023 = find_contributors(LINK_2023)
+    contributors_2024 = find_contributors(LINK_2024)
+
+    totals = count_totals(contributors_2022, contributors_2023, contributors_2024)
+
+    create_sheet(totals)
+
+
+
+if __name__ == "__main__":
+    main()
+
