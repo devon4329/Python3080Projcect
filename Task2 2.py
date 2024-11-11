@@ -14,48 +14,61 @@ import requests
 
 
 
-test_dict1 = dict({'bill': 2, "jill": 3, "frank": 1})
-test_dict2 = dict({'bill': 8, "jill": 7, "frank": 9, "hank": 10})
-test_dict3 = dict({'bill': 8, "jill": 7, "frank": 9, "mary": 10})
+dict2022 = dict({'bill': 2, "jill": 3, "frank": 1})
+dict2023 = dict({'bill': 8, "jill": 7, "frank": 9, "hank": 10})
+dict2024 = dict({'bill': 8, "jill": 7, "frank": 9, "mary": 10})
 
-
-
+# Counts Totals of all lists
 def count_totals(dict1, dict2, dict3):
     the_total = {}
-    for key, values in dict1.items():
-        if key in the_total:
-            the_total[key] += values
-        else:
-            the_total[key] = values
-    for key, values in dict2.items():
-        if key in the_total:
-            the_total[key] += values
-        else:
-            the_total[key] = values
-    for key, values in dict3.items():
-        if key in the_total:
-            the_total[key] += values
-        else:
-            the_total[key] = values
 
-    return list(the_total.items())
+    def add_totals(key, values):
 
-final_count = count_totals(test_dict1, test_dict2, test_dict3)
+        if key in the_total:
+            the_total[key][0].append(values)
+            the_total[key][1] += values
+        else:
+            the_total[key] = [[values], values]
 
+    for dict_in in [dict1, dict2, dict3]:
+        for key, value in dict_in.items():
+            add_totals(key, value)
+
+    sorted_list = sorted_list = sorted([(key, values[0], values[1])
+                                        for key, values in the_total.items()], key=lambda x: x[2], reverse=True)
+
+    return sorted_list
+
+
+
+final_count = count_totals(dict2022, dict2023, dict2024)
+
+
+# Sorts and reverses A list's values from highest to lowest
 def sort_and_reverse(mylist):
     first = len(mylist)
     for i in range(0, first):
         for j in range(0, first - i - 1):
-            if mylist[j][1] < mylist[j+1][1]:
+            if mylist[j][2] < mylist[j+1][2]:
                 temp = mylist[j]
                 mylist[j] = mylist[j+1]
                 mylist[j+1] = temp
-
     return mylist
 
-print(sort_and_reverse(final_count))
 
-def create_sheet(aList):
+#final_count = sort_and_reverse(final_count)
+print(final_count)
+'''
+list_1 = sort_and_reverse((list(test_dict1.items())))
+list_2 = sort_and_reverse(list(test_dict2.items()))
+list_3 = sort_and_reverse(list(test_dict3.items()))
+
+print(list_1)
+print(list_2)
+print(list_3)
+print(final_count)
+
+def create_sheet(aList, list2022, list2023, list2024):
     top_con = openpyxl.Workbook()
     print(top_con.sheetnames)
     sheet = top_con.active
@@ -75,15 +88,17 @@ def create_sheet(aList):
             cell2022.alignment = Alignment(horizontal="center")
 
 
-    # Add names to sheet
+    # Add names
     for i in range(3):
-        cell = sheet.cell(row= i+1, column = i+2, value = aList[i][0])
+        cell = sheet.cell(row= 1, column = i+2, value = aList[i][0])
         cell.alignment = Alignment(horizontal="center", vertical="center")
-        #Add year 2022 values to sheet
-        for j in range(3):
-            cell2 = sheet.cell(row=j+2, column=j+2, value= aList[j][1])
-            cell2.alignment = Alignment(horizontal="center", vertical="center")
+
+    #Add year 2022 values to sheet
+    for i in range(3):
+        cell2 = sheet.cell(row=2, column=i+2, value= list2022[i][1])
+        cell2.alignment = Alignment(horizontal="center", vertical="center")
 
     top_con.save('Task2.xlsx')
 
-create_sheet(final_count)
+create_sheet(final_count, list_1, test_dict2, test_dict3)
+'''
